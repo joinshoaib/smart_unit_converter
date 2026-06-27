@@ -42,7 +42,9 @@ class _ConverterScreenState extends State<ConverterScreen> {
     setState(() {
       _selectedCategory = category;
       _fromUnit = category.units.first;
-      _toUnit = category.units.length > 1 ? category.units[1] : category.units.first;
+      _toUnit = category.units.length > 1
+          ? category.units[1]
+          : category.units.first;
     });
     context.read<AppProvider>().setLastCategory(category.id);
     _calculate();
@@ -95,10 +97,15 @@ class _ConverterScreenState extends State<ConverterScreen> {
     final categories = UnitData.categories;
     final filteredCategories = _searchQuery.isEmpty
         ? categories
-        : categories.where((c) =>
-            c.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            c.description.toLowerCase().contains(_searchQuery.toLowerCase())
-          ).toList();
+        : categories
+              .where(
+                (c) =>
+                    c.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                    c.description.toLowerCase().contains(
+                      _searchQuery.toLowerCase(),
+                    ),
+              )
+              .toList();
 
     return Scaffold(
       body: CustomScrollView(
@@ -141,29 +148,29 @@ class _ConverterScreenState extends State<ConverterScreen> {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final cat = filteredCategories[index];
-                    return CategoryCard(
-                      category: cat,
-                      onTap: () => _selectCategory(cat),
-                    ).animate(delay: (index * 50).ms).fadeIn().slideY(begin: 0.3);
-                  },
-                  childCount: filteredCategories.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final cat = filteredCategories[index];
+                  return CategoryCard(
+                    category: cat,
+                    onTap: () => _selectCategory(cat),
+                  ).animate(delay: (index * 50).ms).fadeIn().slideY(begin: 0.3);
+                }, childCount: filteredCategories.length),
               ),
             )
           else
-            SliverToBoxAdapter(
+            SliverFillRemaining(
+              hasScrollBody: false,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   // Back button
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: () => setState(() => _selectedCategory = null),
+                          onPressed: () =>
+                              setState(() => _selectedCategory = null),
                           icon: Icon(Icons.arrow_back),
                         ),
                         Text(
@@ -183,34 +190,43 @@ class _ConverterScreenState extends State<ConverterScreen> {
                   ),
                   // Converter Panel
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Column(
                       children: [
                         // Input
                         Card(
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('From', style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                )),
-                                SizedBox(height: 8),
+                                Text(
+                                  'From',
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
                                 Row(
                                   children: [
                                     Expanded(
                                       flex: 2,
                                       child: TextField(
                                         controller: _inputController,
-                                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                        keyboardType:
+                                            TextInputType.numberWithOptions(
+                                              decimal: true,
+                                            ),
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp(r'^\d*\.?\d*'),
+                                          ),
                                         ],
                                         onChanged: (_) => _calculate(),
-                                        style: theme.textTheme.headlineSmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: theme.textTheme.headlineSmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                         decoration: InputDecoration(
                                           hintText: '0',
                                           border: InputBorder.none,
@@ -236,7 +252,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: 8),
                         // Swap button
                         Container(
                           decoration: BoxDecoration(
@@ -244,7 +260,9 @@ class _ConverterScreenState extends State<ConverterScreen> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: theme.colorScheme.primary.withOpacity(0.3),
+                                color: theme.colorScheme.primary.withOpacity(
+                                  0.3,
+                                ),
                                 blurRadius: 12,
                                 spreadRadius: 2,
                               ),
@@ -256,28 +274,32 @@ class _ConverterScreenState extends State<ConverterScreen> {
                             iconSize: 28,
                           ),
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: 8),
                         // Output
                         Card(
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: EdgeInsets.all(12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('To', style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.secondary,
-                                )),
-                                SizedBox(height: 8),
+                                Text(
+                                  'To',
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    color: theme.colorScheme.secondary,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
                                 Row(
                                   children: [
                                     Expanded(
                                       flex: 2,
                                       child: Text(
                                         UnitData.formatNumber(_result),
-                                        style: theme.textTheme.headlineSmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: theme.colorScheme.primary,
-                                        ),
+                                        style: theme.textTheme.headlineSmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: theme.colorScheme.primary,
+                                            ),
                                       ),
                                     ),
                                     SizedBox(width: 12),
@@ -298,12 +320,16 @@ class _ConverterScreenState extends State<ConverterScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 24),
+                        SizedBox(height: 12),
                         // Formula display
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                            color: theme.colorScheme.surfaceContainerHighest
+                                .withOpacity(0.5),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(

@@ -582,7 +582,10 @@ class _TimeZoneTabState extends State<_TimeZoneTab> {
   }
 
   String _getOffset(String zoneName) {
-    return _timeZones.firstWhere((z) => z['name'] == zoneName)['offset']!;
+    return _timeZones.firstWhere(
+      (z) => z['name'] == zoneName,
+      orElse: () => {'name': 'UTC', 'offset': '+00:00'},
+    )['offset']!;
   }
 
   @override

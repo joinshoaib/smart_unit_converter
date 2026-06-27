@@ -17,30 +17,38 @@ class CategoryCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(12), // was 16
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(8), // was 10
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(iconData, color: theme.colorScheme.primary, size: 24),
+                child: Icon(
+                  iconData,
+                  color: theme.colorScheme.primary,
+                  size: 22,
+                ), // was 24
               ),
-              SizedBox(height: 12),
+              SizedBox(height: 8), // was 12
               Text(
                 category.name,
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 4),
+              SizedBox(height: 2), // was 4
               Text(
                 '${category.units.length} units',
-                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
@@ -51,17 +59,28 @@ class CategoryCard extends StatelessWidget {
 
   IconData _getIcon(String name) {
     switch (name) {
-      case 'ruler': return Icons.straighten;
-      case 'scale': return Icons.scale;
-      case 'thermometer': return Icons.thermostat;
-      case 'beaker': return Icons.water_drop;
-      case 'square': return Icons.square_foot;
-      case 'speed': return Icons.speed;
-      case 'clock': return Icons.schedule;
-      case 'database': return Icons.storage;
-      case 'zap': return Icons.bolt;
-      case 'gauge': return Icons.speed;
-      default: return Icons.category;
+      case 'ruler':
+        return Icons.straighten;
+      case 'scale':
+        return Icons.scale;
+      case 'thermometer':
+        return Icons.thermostat;
+      case 'beaker':
+        return Icons.water_drop;
+      case 'square':
+        return Icons.square_foot;
+      case 'speed':
+        return Icons.speed;
+      case 'clock':
+        return Icons.schedule;
+      case 'database':
+        return Icons.storage;
+      case 'zap':
+        return Icons.bolt;
+      case 'gauge':
+        return Icons.speed;
+      default:
+        return Icons.category;
     }
   }
 }
