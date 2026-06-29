@@ -1,4 +1,4 @@
-package com.example.smart_unit_converter
+package com.vertexline.smartunitconverter
 
 import io.flutter.embedding.android.FlutterActivity
 
